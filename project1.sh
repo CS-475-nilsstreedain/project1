@@ -1,11 +1,17 @@
 #!/bin/bash
 
-/opt/homebrew/opt/llvm/bin/clang++ -Xpreprocessor -fopenmp -I/opt/homebrew/opt/llvm/include -L/opt/homebrew/opt/llvm/lib -lomp -DNUMT=1 -DNUMTRIALS=50000 -DCSV=true project1.cpp -o project1 && ./project1
-/opt/homebrew/opt/llvm/bin/clang++ -Xpreprocessor -fopenmp -I/opt/homebrew/opt/llvm/include -L/opt/homebrew/opt/llvm/lib -lomp -DNUMT=2 -DNUMTRIALS=50000 -DCSV=true project1.cpp -o project1 && ./project1
-/opt/homebrew/opt/llvm/bin/clang++ -Xpreprocessor -fopenmp -I/opt/homebrew/opt/llvm/include -L/opt/homebrew/opt/llvm/lib -lomp -DNUMT=4 -DNUMTRIALS=50000 -DCSV=true project1.cpp -o project1 && ./project1
-/opt/homebrew/opt/llvm/bin/clang++ -Xpreprocessor -fopenmp -I/opt/homebrew/opt/llvm/include -L/opt/homebrew/opt/llvm/lib -lomp -DNUMT=6 -DNUMTRIALS=50000 -DCSV=true project1.cpp -o project1 && ./project1
-/opt/homebrew/opt/llvm/bin/clang++ -Xpreprocessor -fopenmp -I/opt/homebrew/opt/llvm/include -L/opt/homebrew/opt/llvm/lib -lomp -DNUMT=8 -DNUMTRIALS=50000 -DCSV=true project1.cpp -o project1 && ./project1
+# Define arrays for NUMT and NUMTRIALS values
+NUMT_VALUES=(1 2 4 6 8)
+NUMTRIALS_VALUES=(50000 100000 500000)
 
-/opt/homebrew/opt/llvm/bin/clang++ -Xpreprocessor -fopenmp -I/opt/homebrew/opt/llvm/include -L/opt/homebrew/opt/llvm/lib -lomp -DNUMT=4 -DNUMTRIALS=50000 -DCSV=true project1.cpp -o project1 && ./project1
-/opt/homebrew/opt/llvm/bin/clang++ -Xpreprocessor -fopenmp -I/opt/homebrew/opt/llvm/include -L/opt/homebrew/opt/llvm/lib -lomp -DNUMT=4 -DNUMTRIALS=100000 -DCSV=true project1.cpp -o project1 && ./project1
-/opt/homebrew/opt/llvm/bin/clang++ -Xpreprocessor -fopenmp -I/opt/homebrew/opt/llvm/include -L/opt/homebrew/opt/llvm/lib -lomp -DNUMT=4 -DNUMTRIALS=500000 -DCSV=true project1.cpp -o project1 && ./project1
+# Compiler and flags
+CLANG="/opt/homebrew/opt/llvm/bin/clang++"
+FLAGS="-Xpreprocessor -fopenmp -I/opt/homebrew/opt/llvm/include -L/opt/homebrew/opt/llvm/lib -lomp -DCSV=true"
+
+# Loop over NUMT and NUMTRIALS combinations
+for NUMT in "${NUMT_VALUES[@]}"; do
+  for NUMTRIALS in "${NUMTRIALS_VALUES[@]}"; do
+    $CLANG $FLAGS -DNUMT=$NUMT -DNUMTRIALS=$NUMTRIALS project1.cpp -o project1
+    ./project1
+  done
+done
